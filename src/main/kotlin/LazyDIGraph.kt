@@ -12,7 +12,8 @@ class LazyDIGraph {
         val instance = instanceMap[T::class as KClass<Any>]
             ?: providerMap[T::class as KClass<Any>]
                 ?.invoke()
-                ?.also { instanceMap[T::class as KClass<Any>] = it } as Any
+                ?.also { instanceMap[T::class as KClass<Any>] = it }
+            ?: throw IllegalStateException("Missing dependency: ${T::class}")
 
         return instance as T
     }
